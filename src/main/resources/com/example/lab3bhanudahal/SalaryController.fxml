@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="752.0" prefWidth="902.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab3bhanudahal.SalaryController">
+    <children>
+        <HBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="883.0" spacing="40.0">
+            <children>
+                <VBox alignment="CENTER" fillWidth="false" prefHeight="419.0" prefWidth="189.0" spacing="20.0" style="-fx-background-color: #ed87bc; -fx-border-color: green; -fx-border-radius: 10;">
+                    <children>
+                        <Button fx:id="backtodashboard" mnemonicParsing="false" onAction="#getData" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #404fd6;" text="Back" textAlignment="CENTER" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="13.0" />
+                            </font>
+                        </Button>
+                        <TextField fx:id="sidinput" alignment="TOP_LEFT" promptText="Enter Salary ID" />
+                        <TextField fx:id="eidinput" alignment="TOP_LEFT" promptText="Enter Employee ID" />
+                        <TextField fx:id="monthinput" alignment="TOP_LEFT" promptText="Enter Month" />
+                        <TextField fx:id="salaryinput" alignment="TOP_LEFT" layoutX="11.0" layoutY="151.0" promptText="Enter Salary" />
+                        <Label fx:id="error" prefHeight="35.0" prefWidth="153.0" textFill="#e81313" />
+                        <Button fx:id="addbut" mnemonicParsing="false" onAction="#addData" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: #404fd6;" text="Add" textAlignment="CENTER" textFill="WHITE" />
+                        <Button fx:id="updatebut" mnemonicParsing="false" onAction="#updateData" prefHeight="26.0" prefWidth="67.0" style="-fx-background-color: #404fd6;" text="Update" textAlignment="CENTER" textFill="WHITE" />
+                        <Button fx:id="deletebut" mnemonicParsing="false" onAction="#deleteData" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: red;" text="Delete" textAlignment="CENTER" textFill="#fff6f6" />
+                        <Button fx:id="view" mnemonicParsing="false" onAction="#viewData" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: #404fd6;" text="View" textFill="#f2eaea" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </VBox>
+                <TableView fx:id="tablefordata" prefHeight="538.0" prefWidth="664.0">
+                    <columns>
+                        <TableColumn fx:id="ID_Col" prefWidth="101.0" text="Salary ID" />
+                        <TableColumn fx:id="nameCol" prefWidth="94.0" text="Name" />
+                        <TableColumn fx:id="emailcol" prefWidth="88.0" text="Email" />
+                        <TableColumn fx:id="phonecol" prefWidth="89.5" text="Phone" />
+                  <TableColumn fx:id="salarycol" prefWidth="89.5" text="Salary" />
+                  <TableColumn fx:id="Monthcol" prefWidth="89.5" text="Month" />
+                  <TableColumn fx:id="eidcol" prefWidth="89.5" text="EmployeeID" />
+                    </columns>
+                </TableView>
+            </children>
+        </HBox>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="223.0" layoutY="21.0" prefHeight="34.0" prefWidth="352.0" style="-fx-border-radius: 10;" text="Salary" textAlignment="JUSTIFY" textFill="#8a0b0b">
+            <font>
+                <Font name="American Typewriter" size="24.0" />
+            </font>
+        </Label>
+        <Label fx:id="showuser" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="16.0" prefHeight="26.0" prefWidth="189.0" textFill="#bc5a5a">
+            <font>
+                <Font name="BM DoHyeon OTF" size="13.0" />
+            </font></Label>
+    </children>
+</AnchorPane>
