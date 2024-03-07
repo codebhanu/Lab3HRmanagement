@@ -15,9 +15,9 @@
     <children>
         <HBox alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="883.0" spacing="40.0">
             <children>
-                <VBox alignment="CENTER" fillWidth="false" prefHeight="419.0" prefWidth="189.0" spacing="20.0" style="-fx-background-color: #ed87bc; -fx-border-color: green; -fx-border-radius: 10;">
+                <VBox alignment="CENTER" fillWidth="false" prefHeight="419.0" prefWidth="189.0" spacing="20.0" style="-fx-background-color: blue; -fx-border-color: green; -fx-border-radius: 10;">
                     <children>
-                        <Button fx:id="backtodashboard" mnemonicParsing="false" onAction="#gotodashborad" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #404fd6;" text="Back" textAlignment="CENTER" textFill="WHITE">
+                        <Button fx:id="backtodashboard" mnemonicParsing="false" onAction="#gotodashborad" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: red;" text="Back" textAlignment="CENTER" textFill="WHITE">
                             <font>
                                 <Font name="System Bold" size="13.0" />
                             </font>
@@ -27,10 +27,10 @@
                         <TextField fx:id="monthinput" alignment="TOP_LEFT" promptText="Enter Month" />
                         <TextField fx:id="salaryinput" alignment="TOP_LEFT" layoutX="11.0" layoutY="151.0" promptText="Enter Salary" />
                         <Label fx:id="error" prefHeight="35.0" prefWidth="153.0" textFill="#e81313" />
-                        <Button fx:id="addbut" mnemonicParsing="false" onAction="#addData" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: #404fd6;" text="Add" textAlignment="CENTER" textFill="WHITE" />
-                        <Button fx:id="updatebut" mnemonicParsing="false" onAction="#updateData" prefHeight="26.0" prefWidth="67.0" style="-fx-background-color: #404fd6;" text="Update" textAlignment="CENTER" textFill="WHITE" />
+                        <Button fx:id="addbut" mnemonicParsing="false" onAction="#addData" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: black;" text="Add" textAlignment="CENTER" textFill="WHITE" />
+                        <Button fx:id="updatebut" mnemonicParsing="false" onAction="#updateData" prefHeight="26.0" prefWidth="67.0" style="-fx-background-color: black;" text="Update" textAlignment="CENTER" textFill="WHITE" />
                         <Button fx:id="deletebut" mnemonicParsing="false" onAction="#deleteData" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: red;" text="Delete" textAlignment="CENTER" textFill="#fff6f6" />
-                        <Button fx:id="view" mnemonicParsing="false" onAction="#viewData" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: #404fd6;" text="View" textFill="#f2eaea" />
+                        <Button fx:id="view" mnemonicParsing="false" onAction="#viewData" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: black;" text="View" textFill="#f2eaea" />
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -54,10 +54,10 @@
                 <Font name="American Typewriter" size="24.0" />
             </font>
         </Label>
-        <Label fx:id="showuser" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="16.0" prefHeight="35.0" prefWidth="243.0" textFill="#bc5a5a">
+        <Label fx:id="showuser" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="16.0" prefHeight="35.0" prefWidth="321.0" textFill="#5bbf5b">
             <font>
                 <Font name="BM DoHyeon OTF" size="13.0" />
             </font></Label>
-      <Button fx:id="logout" layoutX="803.0" layoutY="16.0" mnemonicParsing="false" onAction="#logoutfromsalary" text="Log out" />
+      <Button fx:id="logout" layoutX="803.0" layoutY="16.0" mnemonicParsing="false" onAction="#logoutfromsalary" style="-fx-background-color: red;" text="Log out" textFill="#f8eeee" />
     </children>
 </AnchorPane>

@@ -88,7 +88,7 @@ public class Employee_Controller implements Initializable {
 
 
 
-    @FXML     // This adds the data in the table we only provide name,subject and score
+    @FXML     // This adds the data in the table
     void addData(ActionEvent event) {
         String query = "INSERT INTO userTable (Name, Phone, Email,Type) VALUES (?, ?, ?,?)";
         executeQuery(query, List.of(nameInput.getText(), phoneinput.getText(), emailinput.getText(),typeinput.getText()));
@@ -153,6 +153,8 @@ public class Employee_Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        displayUsername();
+
         showEmployeeDetail();
     }
     private ObservableList<EmployeeDetail> getEmployeeDetailList() {
@@ -174,7 +176,7 @@ public class Employee_Controller implements Initializable {
     }
 
     private void showEmployeeDetail() {
-        ObservableList<EmployeeDetail> list = getEmployeeDetailList();   // this is the function we defined in line no 75
+        ObservableList<EmployeeDetail> list = getEmployeeDetailList();
         ID_Col.setCellValueFactory(new PropertyValueFactory<>("Eid"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
         phonecol.setCellValueFactory(new PropertyValueFactory<>("Phone"));
@@ -262,6 +264,11 @@ public class Employee_Controller implements Initializable {
 
             Stage stage = (Stage) error.getScene().getWindow();
             //sending username to another controller;
+            //sending username to another controller
+            Dashboard_Controller secondController  = loader.getController();
+
+            secondController.setUsername(usertodiplay);
+            secondController.displayUsername();
             Scene scene = new Scene(root);
             stage.setScene(scene);
 
@@ -271,5 +278,23 @@ public class Employee_Controller implements Initializable {
 
 
         }
+    }
+
+    public void logoutogtheemployee(ActionEvent actionEvent) {
+        try {
+            // Loading the second view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login_Page.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) error.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+
     }
 }

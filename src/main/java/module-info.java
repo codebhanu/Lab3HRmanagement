@@ -8,5 +8,6 @@ module com.example.lab3bhanudahal {
     opens com.example.lab3bhanudahal to javafx.fxml;
     opens com.example.lab3bhanudahal.Model to javafx.base, javafx.fxml;
 
+
     exports com.example.lab3bhanudahal;
 }

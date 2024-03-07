@@ -72,8 +72,6 @@ public class SalaryController implements Initializable {
     @FXML
     private Button updatebut;
 
-    @FXML
-    private Button view;
 
 
     @FXML
@@ -92,7 +90,7 @@ public class SalaryController implements Initializable {
 
 
 
-    @FXML     // This adds the data in the table we only provide name,subject and score
+    @FXML     // This adds the data in the table
     void addData(ActionEvent event) {
         String query = "INSERT INTO Salary (Eid, Month, Salary) VALUES (?, ?, ?)";
         executeQuery(query, List.of(eidinput.getText(), monthinput.getText(), salaryinput.getText()));
@@ -155,6 +153,8 @@ public class SalaryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        displayUsername();
+
         showSalaryDetails();
     }
     private ObservableList<SalaryDetails> getSalaryDetailsList() {
@@ -179,7 +179,7 @@ public class SalaryController implements Initializable {
     }
 
     private void showSalaryDetails() {
-        ObservableList<SalaryDetails> list = getSalaryDetailsList();   // this is the function we defined in line no 75
+        ObservableList<SalaryDetails> list = getSalaryDetailsList();
         ID_Col.setCellValueFactory(new PropertyValueFactory<>("Sid"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
         emailcol.setCellValueFactory(new PropertyValueFactory<>("Email"));
@@ -269,6 +269,12 @@ public class SalaryController implements Initializable {
             Stage stage = (Stage) error.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+
+            //sending username to another controller
+            Dashboard_Controller secondController  = loader.getController();
+
+            secondController.setUsername(usertodiplay);
+            secondController.displayUsername();
 
             stage.show();
         } catch (IOException e) {
