@@ -18,7 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-public class LoginController implements Initializable {
+public class Login_Page_Controller implements Initializable {
     @FXML
     private Label errorText;
 
@@ -51,16 +51,16 @@ public class LoginController implements Initializable {
                 // Display error message for empty fields
                 errorText.setText("Please Provide Username and Password.");
             } else {
-                String  query= "SELECT * FROM User_login_info WHERE email = ?";
+                String  query= "SELECT * FROM userTable WHERE Type = 'Admin' AND Email=?";
                 String userName=usernameField.getText();
                 try (Connection conn = Database.getConnection();
                      PreparedStatement ps = conn.prepareStatement(query)) {
                     ps.setString(1, userName);
                     try (ResultSet rs = ps.executeQuery()) {
                         if (rs.next()) {
-                            Username=rs.getString("email");
-                            Password=rs.getString("password");
-                            nameforuser=rs.getString("username");
+                            Username=rs.getString("Email");
+                            Password=rs.getString("Password");
+                            nameforuser=rs.getString("Name");
 
 
                         }else {
@@ -78,12 +78,12 @@ public class LoginController implements Initializable {
                     failedAttempts=0;
                     try {
                         // Loading the second view
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
                         Parent root = loader.load();
 
 
                         Stage stage = (Stage) usernameField.getScene().getWindow();
-                        // sending username to another controller
+                        //sending username to another controller
                         Dashboard_Controller secondController  = loader.getController();
 
                         secondController.setUsername(nameforuser);

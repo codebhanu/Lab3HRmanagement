@@ -1,38 +1,80 @@
 package com.example.lab3bhanudahal;
+import com.example.lab3bhanudahal.Model.Database;
 import com.example.lab3bhanudahal.Model.SalaryDetails;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class SalaryController implements Initializable {
-
-
-    public Label showuser;
-    @FXML
-    private TableColumn<SalaryDetails, String> nameCol;
-
-    @FXML
-    private TableColumn<SalaryDetails, String> subjectcol;
-
     @FXML
     private TableColumn<SalaryDetails, Integer> ID_Col;
 
     @FXML
-    private TextField nameInput, subjectinput, idInput, scoreinput;
+    private TableColumn<SalaryDetails, String> Monthcol;
+
+    @FXML
+    private Button addbut;
+
+    @FXML
+    private Button backtodashboard;
+
+    @FXML
+    private Button deletebut;
+
+    @FXML
+    private TableColumn<SalaryDetails, Integer> eidcol;
+
+    @FXML
+    private TextField eidinput;
+
+    @FXML
+    private TableColumn<SalaryDetails, String> emailcol;
 
     @FXML
     private Label error;
 
     @FXML
-    private TableColumn<SalaryDetails, Integer> scorecol;
+    private TextField monthinput;
+
+    @FXML
+    private TableColumn<SalaryDetails, String> nameCol;
+
+    @FXML
+    private TableColumn<SalaryDetails, String> phonecol;
+
+    @FXML
+    private TableColumn<SalaryDetails, Integer> salarycol;
+
+    @FXML
+    private TextField salaryinput;
+
+    @FXML
+    private Label showuser;
+
+    @FXML
+    private TextField sidinput;
+
+    @FXML
+    private Button updatebut;
+
+    @FXML
+    private Button view;
+
 
     @FXML
     private TableView<SalaryDetails> tablefordata;
@@ -43,15 +85,17 @@ public class SalaryController implements Initializable {
 
         this.usertodiplay = usertodiplay;
     }
+    String data= String.valueOf(LocalDate.now());
     public void displayUsername() {
-        showuser.setText("welcome "+usertodiplay);
+        showuser.setText("welcome "+usertodiplay+data);
     }
+
 
 
     @FXML     // This adds the data in the table we only provide name,subject and score
     void addData(ActionEvent event) {
-        String query = "INSERT INTO Student_grades (student_name, subject, score) VALUES (?, ?, ?)";
-        executeQuery(query, List.of(nameInput.getText(), subjectinput.getText(), scoreinput.getText()));
+        String query = "INSERT INTO Salary (Eid, Month, Salary) VALUES (?, ?, ?)";
+        executeQuery(query, List.of(eidinput.getText(), monthinput.getText(), salaryinput.getText()));
         makeEmpty();
 
     }
@@ -61,8 +105,8 @@ public class SalaryController implements Initializable {
     void deleteData(ActionEvent event) {
         validateID(); // this function validate the id if it is valid id or not
         if (error.getText().isEmpty()){
-            String query = "DELETE FROM Student_grades WHERE grade_id=?";
-            executeQuery(query, List.of(idInput.getText()));
+            String query = "DELETE FROM Salary WHERE sID=?";
+            executeQuery(query, List.of(sidinput.getText()));
             makeEmpty();}
     }
 
@@ -70,8 +114,8 @@ public class SalaryController implements Initializable {
     void updateData(ActionEvent event) {
         validateID();
         if (error.getText().isEmpty()){
-            String query = "UPDATE Student_grades SET student_name=?, subject=?, score=? WHERE grade_id=?";
-            executeQuery(query, List.of(nameInput.getText(), subjectinput.getText(), scoreinput.getText(), idInput.getText()));
+            String query = "UPDATE Salary SET Salary=?, Month=? WHERE sID=?";
+            executeQuery(query, List.of(salaryinput.getText(), monthinput.getText(),  sidinput.getText()));
             makeEmpty();} // this function makes the input filed clear after the action is finished
     }
 
@@ -88,8 +132,8 @@ public class SalaryController implements Initializable {
     public void viewData(ActionEvent actionEvent) {
         validateID();
         if (error.getText().isEmpty()){
-            String query = "SELECT grade_id, student_name, subject, score FROM Student_grades WHERE grade_id=?";
-            int ID = Integer.parseInt(idInput.getText());
+            String query = "SELECT sID, Eid, Month, Salary FROM Salary WHERE sID=?";
+            int ID = Integer.parseInt(sidinput.getText());
 
             try (Connection conn = Database.getConnection();
                  PreparedStatement pst = conn.prepareStatement(query)) {
@@ -97,12 +141,12 @@ public class SalaryController implements Initializable {
                 ResultSet rs = pst.executeQuery();
                 if (rs.next()) {
                     error.setText(""); // this remove the error when user input the id that exist in the database
-                    idInput.setText(String.valueOf(rs.getInt("grade_id")));
-                    nameInput.setText(rs.getString("student_name"));
-                    subjectinput.setText(rs.getString("subject"));
-                    scoreinput.setText(String.valueOf(rs.getInt("score")));
+                    sidinput.setText(String.valueOf(rs.getInt("sID")));
+                    eidinput.setText(String.valueOf(rs.getInt("Eid")));
+                    monthinput.setText(rs.getString("Month"));
+                    salaryinput.setText(String.valueOf(rs.getInt("Salary")));
                 } else {
-                    error.setText("No student found with ID" + ID);
+                    error.setText("No Salary found with ID" + ID);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -111,17 +155,21 @@ public class SalaryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        showSalaryDetails();
     }
     private ObservableList<SalaryDetails> getSalaryDetailsList() {
         ObservableList<SalaryDetails> studentgradesList = FXCollections.observableArrayList();
-        String query = "SELECT * FROM Student_grades";
+        String query = "SELECT s.sID, u.Name, u.Email, u.Phone, s.Salary, s.Month, u.Eid \n" +
+                "FROM userTable u\n" +
+                "JOIN Salary s ON u.Eid = s.eID\n" +
+                "ORDER BY s.sID, u.Eid;";
         try (Connection conn = Database.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(query)) {
 
             while (rs.next()) {
-                SalaryDetails student = new SalaryDetails(rs.getInt("grade_id"), rs.getString("student_name"), rs.getString("subject"), rs.getInt("score"));
-                studentgradesList.add(student);
+                SalaryDetails salary = new SalaryDetails(rs.getInt("sID"), rs.getString("Name"), rs.getString("Email"), rs.getString("Phone"),rs.getInt("Salary"),rs.getString("Month"),rs.getInt("Eid"));
+                studentgradesList.add(salary);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -132,10 +180,13 @@ public class SalaryController implements Initializable {
 
     private void showSalaryDetails() {
         ObservableList<SalaryDetails> list = getSalaryDetailsList();   // this is the function we defined in line no 75
-        ID_Col.setCellValueFactory(new PropertyValueFactory<>("grade_id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("student_name"));
-        scorecol.setCellValueFactory(new PropertyValueFactory<>("score"));
-        subjectcol.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        ID_Col.setCellValueFactory(new PropertyValueFactory<>("Sid"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        emailcol.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        phonecol.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+        salarycol.setCellValueFactory(new PropertyValueFactory<>("Salary"));
+        Monthcol.setCellValueFactory(new PropertyValueFactory<>("Month"));
+        eidcol.setCellValueFactory(new PropertyValueFactory<>("Eid"));
         tablefordata.setItems(list);  //this sets the list in table view as like we have mapped the table in above code
     }
 
@@ -167,7 +218,7 @@ public class SalaryController implements Initializable {
     //in this code below we check if the id exist in the database or not to perform validation
 
     private boolean doesIdExist(String id) {
-        String query = "SELECT COUNT(*) FROM Student_grades WHERE grade_id = ?";
+        String query = "SELECT COUNT(*) FROM Salary WHERE sID = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, id);
@@ -184,13 +235,13 @@ public class SalaryController implements Initializable {
 
     // below code helps to validate data
     public void  validateID() {
-        if (idInput.getText().isEmpty()){
+        if (sidinput.getText().isEmpty()){
             error.setText("Enter an ID");}
         else{
-            if (!isInteger(idInput.getText())) {
+            if (!isInteger(sidinput.getText())) {
                 error.setText("Error: ID must be an integer");
             } else {
-                if (!doesIdExist(idInput.getText())) {
+                if (!doesIdExist(sidinput.getText())) {
                     error.setText("Error:ID does Not exist");
 
                 } else {
@@ -201,10 +252,45 @@ public class SalaryController implements Initializable {
 
     // this is the function that we use to make the input filed empty after each action.
     private void makeEmpty() {
-        nameInput.setText("");
-        subjectinput.setText("");
-        idInput.setText("");
-        scoreinput.setText("");
+        sidinput.setText("");
+        eidinput.setText("");
+        monthinput.setText("");
+        salaryinput.setText("");
 
+    }
+
+    public void gotodashborad(ActionEvent actionEvent) {
+        try {
+            // Loading the second view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+            Parent root = loader.load();
+
+
+            Stage stage = (Stage) error.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+
+        }
+    }
+
+    public void logoutfromsalary(ActionEvent actionEvent) {
+            try {
+                // Loading the second view
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Login_Page.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) sidinput.getScene().getWindow();
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
     }
 }

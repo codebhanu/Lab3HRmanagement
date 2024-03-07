@@ -1,16 +1,16 @@
 package com.example.lab3bhanudahal.Model;
 
 public class SalaryDetails {
-    int sID;
-    String Name;
-    String Email;
 
-    public int getsID() {
-        return sID;
+private int Sid;
+private String Name;
+
+    public int getSid() {
+        return Sid;
     }
 
-    public void setsID(int sID) {
-        this.sID = sID;
+    public void setSid(int sid) {
+        Sid = sid;
     }
 
     public String getName() {
@@ -37,11 +37,11 @@ public class SalaryDetails {
         Phone = phone;
     }
 
-    public String getSalary() {
+    public int getSalary() {
         return Salary;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(int salary) {
         Salary = salary;
     }
 
@@ -61,8 +61,11 @@ public class SalaryDetails {
         Eid = eid;
     }
 
-    public SalaryDetails(int sID, String name, String email, String phone, String salary, String month, int eid) {
-        this.sID = sID;
+    private String Email;
+private String  Phone;
+
+    public SalaryDetails(int sid, String name, String email, String phone, int salary, String month, int eid) {
+        Sid = sid;
         Name = name;
         Email = email;
         Phone = phone;
@@ -71,8 +74,11 @@ public class SalaryDetails {
         Eid = eid;
     }
 
-    String Phone;
-    String Salary;
-    String Month;
-    int Eid;
+
+
+    private int Salary;
+private String Month;
+private int Eid;
+
+
 }

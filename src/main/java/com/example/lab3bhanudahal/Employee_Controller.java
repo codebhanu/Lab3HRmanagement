@@ -1,39 +1,76 @@
 package com.example.lab3bhanudahal;
 
+import com.example.lab3bhanudahal.Model.Database;
 import com.example.lab3bhanudahal.Model.EmployeeDetail;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
-
-
-    public Label showuser;
-    @FXML
-    private TableColumn<EmployeeDetail, String> nameCol;
-
-    @FXML
-    private TableColumn<EmployeeDetail, String> subjectcol;
+public class Employee_Controller implements Initializable {
 
     @FXML
     private TableColumn<EmployeeDetail, Integer> ID_Col;
 
     @FXML
-    private TextField nameInput, subjectinput, idInput, scoreinput;
+    private Button addbut;
+
+    @FXML
+    private Button backbut;
+
+    @FXML
+    private Button deletebut;
+
+    @FXML
+    private TableColumn<EmployeeDetail, String> emailcol;
+
+    @FXML
+    private TextField emailinput;
 
     @FXML
     private Label error;
 
     @FXML
-    private TableColumn<EmployeeDetail, Integer> scorecol;
+    private TextField idInput;
+
+    @FXML
+    private TableColumn<EmployeeDetail, String> nameCol;
+
+    @FXML
+    private TextField nameInput;
+
+    @FXML
+    private TableColumn<EmployeeDetail, String> phonecol;
+
+    @FXML
+    private TextField phoneinput;
+
+    @FXML
+    private Label showuser;
+
+    @FXML
+    private TableColumn<EmployeeDetail, String> typecol;
+
+    @FXML
+    private TextField typeinput;
+
+    @FXML
+    private Button updatebut;
+
 
     @FXML
     private TableView<EmployeeDetail> tablefordata;
@@ -44,15 +81,17 @@ public class HelloController implements Initializable {
 
         this.usertodiplay = usertodiplay;
     }
+    String data= String.valueOf(LocalDate.now());
     public void displayUsername() {
-        showuser.setText("welcome "+usertodiplay);
+        showuser.setText("welcome "+usertodiplay+data);
     }
+
 
 
     @FXML     // This adds the data in the table we only provide name,subject and score
     void addData(ActionEvent event) {
-        String query = "INSERT INTO Student_grades (student_name, subject, score) VALUES (?, ?, ?)";
-        executeQuery(query, List.of(nameInput.getText(), subjectinput.getText(), scoreinput.getText()));
+        String query = "INSERT INTO userTable (Name, Phone, Email,Type) VALUES (?, ?, ?,?)";
+        executeQuery(query, List.of(nameInput.getText(), phoneinput.getText(), emailinput.getText(),typeinput.getText()));
         makeEmpty();
 
     }
@@ -62,7 +101,7 @@ public class HelloController implements Initializable {
     void deleteData(ActionEvent event) {
         validateID(); // this function validate the id if it is valid id or not
         if (error.getText().isEmpty()){
-            String query = "DELETE FROM Student_grades WHERE grade_id=?";
+            String query = "DELETE FROM userTable WHERE Eid=?";
             executeQuery(query, List.of(idInput.getText()));
             makeEmpty();}
     }
@@ -71,8 +110,8 @@ public class HelloController implements Initializable {
     void updateData(ActionEvent event) {
         validateID();
         if (error.getText().isEmpty()){
-            String query = "UPDATE Student_grades SET student_name=?, subject=?, score=? WHERE grade_id=?";
-            executeQuery(query, List.of(nameInput.getText(), subjectinput.getText(), scoreinput.getText(), idInput.getText()));
+            String query = "UPDATE userTable SET Name=?, Phone=?, Email=?,Type=? WHERE Eid=?";
+            executeQuery(query, List.of(nameInput.getText(), phoneinput.getText(), emailinput.getText(),typeinput.getText(), idInput.getText()));
             makeEmpty();} // this function makes the input filed clear after the action is finished
     }
 
@@ -89,7 +128,7 @@ public class HelloController implements Initializable {
     public void viewData(ActionEvent actionEvent) {
         validateID();
         if (error.getText().isEmpty()){
-            String query = "SELECT grade_id, student_name, subject, score FROM Student_grades WHERE grade_id=?";
+            String query = "SELECT Eid, Name, Phone, Email,Type FROM userTable WHERE Eid=?";
             int ID = Integer.parseInt(idInput.getText());
 
             try (Connection conn = Database.getConnection();
@@ -98,12 +137,14 @@ public class HelloController implements Initializable {
                 ResultSet rs = pst.executeQuery();
                 if (rs.next()) {
                     error.setText(""); // this remove the error when user input the id that exist in the database
-                    idInput.setText(String.valueOf(rs.getInt("grade_id")));
-                    nameInput.setText(rs.getString("student_name"));
-                    subjectinput.setText(rs.getString("subject"));
-                    scoreinput.setText(String.valueOf(rs.getInt("score")));
+                    idInput.setText(String.valueOf(rs.getInt("Eid")));
+                    nameInput.setText(rs.getString("Name"));
+                    phoneinput.setText(rs.getString("Phone"));
+                    emailinput.setText(rs.getString("Email"));
+                    typeinput.setText(rs.getString("Type"));
+
                 } else {
-                    error.setText("No student found with ID" + ID);
+                    error.setText("No Employee found with ID" + ID);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -112,31 +153,33 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        showEmployeeDetail();
     }
     private ObservableList<EmployeeDetail> getEmployeeDetailList() {
-        ObservableList<EmployeeDetail> studentgradesList = FXCollections.observableArrayList();
-        String query = "SELECT * FROM Student_grades";
+        ObservableList<EmployeeDetail> employeelist = FXCollections.observableArrayList();
+        String query = "SELECT Eid,Name,Phone,Email,Type FROM userTable WHERE Type='Employee'";
         try (Connection conn = Database.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(query)) {
 
             while (rs.next()) {
-                EmployeeDetail student = new EmployeeDetail(rs.getInt("grade_id"), rs.getString("student_name"), rs.getString("subject"), rs.getInt("score"));
-                studentgradesList.add(student);
+                EmployeeDetail Empployee = new EmployeeDetail(rs.getInt("Eid"), rs.getString("Name"), rs.getString("Phone"), rs.getString("Email"),rs.getString("Type"));
+                employeelist.add(Empployee);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return studentgradesList;
+        return employeelist;
         //in the above code  i used a function executeQuery which is defined  below
     }
 
     private void showEmployeeDetail() {
         ObservableList<EmployeeDetail> list = getEmployeeDetailList();   // this is the function we defined in line no 75
-        ID_Col.setCellValueFactory(new PropertyValueFactory<>("grade_id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("student_name"));
-        scorecol.setCellValueFactory(new PropertyValueFactory<>("score"));
-        subjectcol.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        ID_Col.setCellValueFactory(new PropertyValueFactory<>("Eid"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        phonecol.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+        emailcol.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        typecol.setCellValueFactory(new PropertyValueFactory<>("Type"));
         tablefordata.setItems(list);  //this sets the list in table view as like we have mapped the table in above code
     }
 
@@ -168,7 +211,7 @@ public class HelloController implements Initializable {
     //in this code below we check if the id exist in the database or not to perform validation
 
     private boolean doesIdExist(String id) {
-        String query = "SELECT COUNT(*) FROM Student_grades WHERE grade_id = ?";
+        String query = "SELECT COUNT(*) FROM userTable WHERE Eid = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, id);
@@ -202,10 +245,31 @@ public class HelloController implements Initializable {
 
     // this is the function that we use to make the input filed empty after each action.
     private void makeEmpty() {
-        nameInput.setText("");
-        subjectinput.setText("");
         idInput.setText("");
-        scoreinput.setText("");
+        nameInput.setText("");
+        phoneinput.setText("");
+        emailinput.setText("");
+        typeinput.setText("");
 
+    }
+
+    public void backtothedashboard(ActionEvent actionEvent) {
+        try {
+            // Loading the second view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+            Parent root = loader.load();
+
+
+            Stage stage = (Stage) error.getScene().getWindow();
+            //sending username to another controller;
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+
+        }
     }
 }

@@ -17,7 +17,7 @@
             <children>
                 <VBox alignment="CENTER" fillWidth="false" prefHeight="419.0" prefWidth="189.0" spacing="20.0" style="-fx-background-color: #ed87bc; -fx-border-color: green; -fx-border-radius: 10;">
                     <children>
-                        <Button fx:id="backtodashboard" mnemonicParsing="false" onAction="#getData" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #404fd6;" text="Back" textAlignment="CENTER" textFill="WHITE">
+                        <Button fx:id="backtodashboard" mnemonicParsing="false" onAction="#gotodashborad" prefHeight="26.0" prefWidth="66.0" style="-fx-background-color: #404fd6;" text="Back" textAlignment="CENTER" textFill="WHITE">
                             <font>
                                 <Font name="System Bold" size="13.0" />
                             </font>
@@ -49,14 +49,15 @@
                 </TableView>
             </children>
         </HBox>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="223.0" layoutY="21.0" prefHeight="34.0" prefWidth="352.0" style="-fx-border-radius: 10;" text="Salary" textAlignment="JUSTIFY" textFill="#8a0b0b">
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="356.0" layoutY="21.0" prefHeight="34.0" prefWidth="327.0" style="-fx-border-radius: 10;" text="Salary  Of Employee" textAlignment="JUSTIFY" textFill="#8a0b0b">
             <font>
                 <Font name="American Typewriter" size="24.0" />
             </font>
         </Label>
-        <Label fx:id="showuser" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="16.0" prefHeight="26.0" prefWidth="189.0" textFill="#bc5a5a">
+        <Label fx:id="showuser" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="16.0" prefHeight="35.0" prefWidth="243.0" textFill="#bc5a5a">
             <font>
                 <Font name="BM DoHyeon OTF" size="13.0" />
             </font></Label>
+      <Button fx:id="logout" layoutX="803.0" layoutY="16.0" mnemonicParsing="false" onAction="#logoutfromsalary" text="Log out" />
     </children>
 </AnchorPane>

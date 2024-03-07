@@ -1,9 +1,10 @@
 package com.example.lab3bhanudahal.Model;
 
 public class EmployeeDetail {
-int Eid;
-String Name;
-String Email;
+    private  int Eid;
+    private String Name;
+    private String Phone;
+    private  String Email;
 
     public int getEid() {
         return Eid;
@@ -19,6 +20,14 @@ String Email;
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
     }
 
     public String getEmail() {
@@ -37,13 +46,17 @@ String Email;
         Type = type;
     }
 
-    public EmployeeDetail(int eid, String name, String email, String type) {
+    public EmployeeDetail(int eid, String name, String phone, String email, String type) {
         Eid = eid;
         Name = name;
+        Phone = phone;
         Email = email;
         Type = type;
     }
 
-    String Type;
+    private String Type;
+
+
+
 
 }
